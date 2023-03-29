@@ -58,7 +58,9 @@ while True:
     # camera.capture(output, format="rgb")
     ret, image = cam.read()
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    cv2.imshow('image',gray)
+    
+    cv2.imshow('image',gray) #comment out to increase performance - stops video from showing up on execution
+    
     # image = asyncio.run(getImage())
 
     # Find all the faces and face encodings in the current frame of video
