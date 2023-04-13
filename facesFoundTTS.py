@@ -19,7 +19,6 @@ else:
     for name in nameArr:
         if name != nameArr[len(nameArr)-1]:
             sayNames += name + ", "
-            # nameArr.remove(name)
             print(nameArr)
         else:
             sayNames += " and " + name 

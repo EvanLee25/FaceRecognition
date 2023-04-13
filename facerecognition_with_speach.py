@@ -14,6 +14,8 @@ import picamera
 import numpy as np
 import cv2
 import asyncio
+import pyttsx3
+import time
 
 # Get a reference to the Raspberry Pi camera.
 # If this fails, make sure you have a camera connected to the RPi and that you
@@ -25,9 +27,6 @@ import asyncio
 cam = cv2.VideoCapture(0) 
 cam.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
 cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
-# width = int(cam.get(cv2.CAP_PROP_FRAME_WIDTH))
-# height = int(cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
-# output = np.empty((width,height,3), dtype=np.uint8)
 
 # Load a sample picture and learn how to recognize it.
 print("Loading known face image(s)")
@@ -43,17 +42,39 @@ riley_face_encoding = face_recognition.face_encodings(riley_image)[0]
 # Initialize some variables
 face_locations = []
 face_encodings = []
+tts = pyttsx3.init() #initialize text to speech object
+nameDic = {}
+nameArr = []
 
 print("Capturing image.")
 
-# async def getImage():
-#     asyncio.sleep(0.25)
-#     ret, image = cam.read()
-#     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-#     cv2.imshow('image',gray)
-#     return image
+time_start = time.perf_counter() #starting timer for speech
 
 while True:
+
+    time_update = time.perf_counter() #second timer for speech
+
+    if (round(time_update - time_start) >= 15):
+        if (len(nameArr)) == 0:
+            tts.say("No faces detected.")
+
+        else:
+            sayNames = "I have detected "
+            for name in nameArr:
+                if name != nameArr[len(nameArr)-1]:
+                    sayNames += name + ", "
+                    print(nameArr)
+                else:
+                    sayNames += " and " + name 
+            print("SAYING NAMES:")
+            print(sayNames)
+            tts.say(sayNames)
+            nameArr = [] #reset face array
+            nameDic = {} #reset face dictionary
+
+        time_start = time_update #move times up for next comparison
+        tts.runAndWait() #say speech
+
     # Grab a single frame of video from the RPi camera as a numpy array
     # camera.capture(output, format="rgb")
     ret, image = cam.read()
@@ -72,14 +93,23 @@ while True:
     for face_encoding in face_encodings:
         # See if the face is a match for the known face(s)
         match = face_recognition.compare_faces([evan_face_encoding, hunter_face_encoding, riley_face_encoding], face_encoding)
+        
         name = "<Unknown Person>"
-
+        
         if match[0]:
             name = "Evan Lee"
-        elif match[1]:
+        if match[1]:
             name = "Hunter Egeland"
-        elif match[2]:
+        if match[2]:
             name = "Riley Monwai"
+
+
+        if name not in nameArr:
+            nameArr.append(name)
+            nameDic[name] = 1
+
+        else:
+            nameDic[name] += 1
 
         print("I see someone named {}!".format(name))
 
