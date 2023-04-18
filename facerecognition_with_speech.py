@@ -65,7 +65,7 @@ while True:
                     sayNames += name + ", "
                     print(nameArr)
                 else:
-                    sayNames += " and " + name 
+                    sayNames += "and " + name 
             print("SAYING NAMES:")
             print(sayNames)
             tts.say(sayNames)
