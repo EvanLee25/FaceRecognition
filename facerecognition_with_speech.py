@@ -39,6 +39,9 @@ hunter_face_encoding = face_recognition.face_encodings(hunter_image)[0]
 riley_image = face_recognition.load_image_file("riley1.jpg")
 riley_face_encoding = face_recognition.face_encodings(riley_image)[0]
 
+tank_image = face_recognition.load_image_file("tankpic.jpg")
+tank_face_encoding = face_recognition.face_encodings(tank_image)[0]
+
 # Initialize some variables
 face_locations = []
 face_encodings = []
@@ -61,9 +64,14 @@ while True:
         else:
             sayNames = "I have detected "
             for name in nameArr:
+
                 if name != nameArr[len(nameArr)-1]:
                     sayNames += name + ", "
                     print(nameArr)
+                
+                elif len(nameArr) == 1:
+                    sayNames += name
+                
                 else:
                     sayNames += "and " + name 
             print("SAYING NAMES:")
@@ -92,7 +100,7 @@ while True:
     # Loop over each face found in the frame to see if it's someone we know.
     for face_encoding in face_encodings:
         # See if the face is a match for the known face(s)
-        match = face_recognition.compare_faces([evan_face_encoding, hunter_face_encoding, riley_face_encoding], face_encoding)
+        match = face_recognition.compare_faces([evan_face_encoding, hunter_face_encoding, riley_face_encoding, tank_face_encoding], face_encoding)
         
         name = "<Unknown Person>"
         
@@ -102,6 +110,8 @@ while True:
             name = "Hunter Egeland"
         if match[2]:
             name = "Riley Monwai"
+        if match[3]:
+            name = "Jarvis"
 
 
         if name not in nameArr:
