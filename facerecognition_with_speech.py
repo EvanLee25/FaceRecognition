@@ -70,10 +70,10 @@ while True:
                     print(nameArr)
                 
                 elif len(nameArr) == 1:
-                    sayNames += name
+                    sayNames += name + "!"
                 
                 else:
-                    sayNames += "and " + name 
+                    sayNames += "and " + name + "!"
             print("SAYING NAMES:")
             print(sayNames)
             tts.say(sayNames)

@@ -21,7 +21,7 @@ else:
             sayNames += name + ", "
             print(nameArr)
         else:
-            sayNames += " and " + name 
+            sayNames += " and " + name
             
     print(sayNames)
     tts.say(sayNames)
