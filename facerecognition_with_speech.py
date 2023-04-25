@@ -10,10 +10,8 @@
 #fswebcam -r 1280x720 --no-banner filename.jpg
 
 import face_recognition
-import picamera
-import numpy as np
+import picamera #use if using raspberry pi camera that is non usb camera
 import cv2
-import asyncio
 import pyttsx3
 import time
 
